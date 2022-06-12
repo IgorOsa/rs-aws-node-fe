@@ -1,8 +1,8 @@
 # Links
 
-CloudFront URL - [d3hpqi2kgfd2js.cloudfront.net](https://d3hpqi2kgfd2js.cloudfront.net)
+CloudFront URL - [dyfghvez1nca3.cloudfront.net](https://dyfghvez1nca3.cloudfront.net/)
 
-S3-website - [rs-node-aws-app](http://rs-node-aws-app.s3-website-us-east-1.amazonaws.com/)
+S3-website - [rs-aws-node-fe](http://rs-aws-node-fe.s3-website-eu-west-1.amazonaws.com/)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
