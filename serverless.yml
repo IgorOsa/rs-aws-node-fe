@@ -1,10 +1,13 @@
-service: rs-node-aws-app
+org: igvardo
+app: rs-aws-node-fe
+service: shop-react-redux-cloudfront
 
 frameworkVersion: '2'
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
+  region: eu-west-1
   # setup profile for AWS CLI.
   # profile: node-aws
 
@@ -17,7 +20,7 @@ plugins:
 
 custom:
   client:
-    bucketName: rs-node-aws-app
+    bucketName: rs-aws-node-fe
     distributionFolder: build
   s3BucketName: ${self:custom.client.bucketName}
 
