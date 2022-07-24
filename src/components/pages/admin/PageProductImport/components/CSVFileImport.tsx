@@ -15,9 +15,10 @@ type CSVFileImportProps = {
 };
 
 const getAuthorizationToken = () => {
-  const token = localStorage.getItem("authorization_token");
-  if (token) {
-    return `Basic ${token}`
+  const authorization_token = localStorage.getItem('authorization_token')
+
+  if (authorization_token) {
+    return `Basic ${authorization_token}`
   } else {
     return '';
   }
@@ -47,13 +48,19 @@ export default function CSVFileImport({url, title}: CSVFileImportProps) {
         url,
         params: {
           name: encodeURIComponent(file.name)
+        },
+        headers: {
+          Authorization: getAuthorizationToken(),
         }
       })
       console.log('File to upload: ', file.name)
       console.log('Uploading to: ', response.data)
       const result = await fetch(response.data, {
         method: 'PUT',
-        body: file
+        body: file,
+        headers: {
+          Authorization: getAuthorizationToken(),
+        }
       })
       console.log('Result: ', result)
       setFile('');
