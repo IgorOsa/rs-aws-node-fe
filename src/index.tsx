@@ -13,12 +13,18 @@ axios.interceptors.response.use(
     return response;
   },
   function(error) {
-    if (error?.response?.status === 400) {
+    const responseError = error?.response?.status;
+
+    if (responseError === 400) {
       alert(error.response.data?.data);
     }
 
-    if (error?.response?.status === 403 || error?.response?.status === 401) {
-      alert(`${error.response.status} : ${error.response.data?.message}`);
+    if (responseError === 401) {
+      alert('401 Error: Unauthorized');
+    }
+
+    if (responseError === 403) {
+      alert('403 Error: Forbidden');
     }
 
     return Promise.reject(error?.response ?? error);

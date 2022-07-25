@@ -3,6 +3,8 @@ import {makeStyles} from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
 import axios from 'axios';
 
+const authToken = localStorage.getItem('authorization_token');
+
 const useStyles = makeStyles((theme) => ({
   content: {
     padding: theme.spacing(3, 0, 3),
@@ -12,16 +14,6 @@ const useStyles = makeStyles((theme) => ({
 type CSVFileImportProps = {
   url: string,
   title: string
-};
-
-const getAuthorizationToken = () => {
-  const authorization_token = localStorage.getItem('authorization_token')
-
-  if (authorization_token) {
-    return `Basic ${authorization_token}`
-  } else {
-    return '';
-  }
 };
 
 export default function CSVFileImport({url, title}: CSVFileImportProps) {
@@ -41,7 +33,6 @@ export default function CSVFileImport({url, title}: CSVFileImportProps) {
 
   const uploadFile = async (e: any) => {
     try {
-
       // Get the presigned URL
       const response = await axios({
         method: 'GET',
@@ -49,18 +40,13 @@ export default function CSVFileImport({url, title}: CSVFileImportProps) {
         params: {
           name: encodeURIComponent(file.name)
         },
-        headers: {
-          Authorization: getAuthorizationToken(),
-        }
+        headers: { Authorization: `Basic ${authToken}` },
       })
       console.log('File to upload: ', file.name)
       console.log('Uploading to: ', response.data)
       const result = await fetch(response.data, {
         method: 'PUT',
         body: file,
-        headers: {
-          Authorization: getAuthorizationToken(),
-        }
       })
       console.log('Result: ', result)
       setFile('');
