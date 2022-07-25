@@ -3,8 +3,6 @@ import {makeStyles} from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
 import axios from 'axios';
 
-const authToken = localStorage.getItem('authorization_token');
-
 const useStyles = makeStyles((theme) => ({
   content: {
     padding: theme.spacing(3, 0, 3),
@@ -33,23 +31,26 @@ export default function CSVFileImport({url, title}: CSVFileImportProps) {
 
   const uploadFile = async (e: any) => {
     try {
+      const authToken = localStorage.getItem('authorization_token');
       // Get the presigned URL
       const response = await axios({
         method: 'GET',
         url,
+        headers: authToken ? { Authorization: `Basic ${authToken}` } : {},
         params: {
           name: encodeURIComponent(file.name)
         },
-        headers: { Authorization: `Basic ${authToken}` },
       })
-      console.log('File to upload: ', file.name)
-      console.log('Uploading to: ', response.data)
-      const result = await fetch(response.data, {
-        method: 'PUT',
-        body: file,
-      })
-      console.log('Result: ', result)
-      setFile('');
+      if (response.status < 400) {
+        console.log('File to upload: ', file.name)
+        console.log('Uploading to: ', response.data)
+        const result = await fetch(response.data, {
+          method: 'PUT',
+          body: file,
+        })
+        console.log('Result: ', result)
+        setFile('');
+      }
     } catch (e: any) {
       console.error(`Error upload file ${e?.data?.message}`)
     }
